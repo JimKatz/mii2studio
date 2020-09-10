@@ -5,7 +5,9 @@ from kaitaistruct import __version__ as ks_version, KaitaiStruct, KaitaiStream, 
 
 
 if parse_version(ks_version) < parse_version('0.7'):
-    raise Exception("Incompatible Kaitai Struct Python API: 0.7 or later is required, but you have %s" % (ks_version))
+    raise Exception(
+        "Incompatible Kaitai Struct Python API: 0.7 or later is required, but you have %s" % (ks_version))
+
 
 class Gen2Wiiu3dsMiitomo(KaitaiStruct):
     def __init__(self, _io, _parent=None, _root=None):
@@ -387,5 +389,3 @@ class Gen2Wiiu3dsMiitomo(KaitaiStruct):
 
         self._m_facial_hair_size = ((self.beard >> 6) & 15)
         return self._m_facial_hair_size if hasattr(self, '_m_facial_hair_size') else None
-
-
