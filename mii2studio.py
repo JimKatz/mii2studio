@@ -1,9 +1,13 @@
+import subprocess
 import sys
-from struct import pack
 from binascii import hexlify
+from Crypto.Cipher import AES
+from os import remove
+from shutil import which
+from struct import pack
 
 if len(sys.argv) < 4:
-    print("Usage: python mii2studio.py <input switch mii file> <output studio mii file> <type (switch/wii/3ds/wiiu/miitomo)>")
+    print("Usage: python mii2studio.py <input mii file / qr code> <output studio mii file> <type (switch/wii/3ds/wiiu/miitomo)>")
     exit()
 
 if sys.argv[3] == "wii":
@@ -11,7 +15,32 @@ if sys.argv[3] == "wii":
     orig_mii = Gen1Wii.from_file(sys.argv[1])
 elif sys.argv[3] == "3ds" or sys.argv[3] == "wiiu" or sys.argv[3] == "miitomo":
     from gen2_wiiu_3ds_miitomo import Gen2Wiiu3dsMiitomo
-    orig_mii = Gen2Wiiu3dsMiitomo.from_file(sys.argv[1])
+    input_file = sys.argv[1]
+    if ".png" in input_file or ".jpg" in input_file or ".jpeg" in input_file:
+        if which("zbarimg") is None:
+            print("Error: Please install zbarimg.")
+            exit()
+
+        zbar = subprocess.Popen(["zbarimg", "--raw", "--oneshot", "-Sbinary", input_file], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        decoded_qr = zbar.communicate()[0]
+
+        # https://gist.github.com/jaames/96ce8daa11b61b758b6b0227b55f9f78
+
+        key = bytes([0x59, 0xFC, 0x81, 0x7E, 0x64, 0x46, 0xEA, 0x61, 0x90, 0x34, 0x7B, 0x20, 0xE9, 0xBD, 0xCE, 0x52])
+
+        with open("temp.mii", "wb") as f:
+            nonce = decoded_qr[:8]
+            cipher = AES.new(key, AES.MODE_CCM, nonce + bytes([0, 0, 0, 0]))
+            content = cipher.decrypt(decoded_qr[8:96])
+            result = content[:12] + nonce + content[12:]
+            f.write(result)
+
+        input_file = "temp.mii"
+
+    orig_mii = Gen2Wiiu3dsMiitomo.from_file(input_file)
+
+    if input_file == "temp.mii":
+        remove("temp.mii")
 elif sys.argv[3] == "switch":
     from gen3_switch import Gen3Switch
     orig_mii = Gen3Switch.from_file(sys.argv[1])
