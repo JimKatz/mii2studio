@@ -135,7 +135,7 @@ instances:
   eyebrow_color:
     value: eyebrow >> 5 & 7
   eyebrow_type:
-    value: eyebrow & 15
+    value: eyebrow & 31
   nose_vertical:
     value: nose >> 9 & 31
   nose_size:
@@ -169,7 +169,7 @@ instances:
   glasses_color:
     value: glasses >> 4 & 7
   glasses_type:
-    value: glasses & 7
+    value: glasses & 15
   mole_vertical:
     value: mole >> 10 & 31
   mole_horizontal:
