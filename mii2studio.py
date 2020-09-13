@@ -3,6 +3,7 @@ import sys
 from binascii import hexlify
 from Crypto.Cipher import AES
 from os import remove
+from PIL import Image
 from shutil import which
 from struct import pack
 
@@ -16,7 +17,7 @@ if sys.argv[3] == "wii":
 elif sys.argv[3] == "3ds" or sys.argv[3] == "wiiu" or sys.argv[3] == "miitomo":
     from gen2_wiiu_3ds_miitomo import Gen2Wiiu3dsMiitomo
     input_file = sys.argv[1]
-    if ".png" in input_file or ".jpg" in input_file or ".jpeg" in input_file:
+    if ".png" in input_file.lower() or ".jpg" in input_file.lower() or ".jpeg" in input_file.lower():
         if which("zbarimg") is None:
             print("Error: Please install zbarimg.")
             exit()
