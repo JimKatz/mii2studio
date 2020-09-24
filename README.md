@@ -16,6 +16,34 @@ Usage: `python mii2studio.py <input switch mii file> <output studio mii file> <t
 * Generation 2: 3DS, Wii U, and [Miitomo](https://kaeru.world/projects/kaerutomo)
 * Generation 3: Switch
 
+## Importing/Exporting to Mii Studio
+
+It's possible to import or export a Mii from Mii Studio. To do that, please follow these steps.
+
+1. Add [Mii Studio Import/Export](javascript:(function () {var s = document.createElement('script');s.setAttribute('src', 'https://riiconnect24.github.io/Mii-Tools/miistudio.js');document.body.appendChild(s);}());) to your bookmarks.
+1. Go to the [Mii Studio](https://accounts.nintendo.com/mii_studio) website.
+
+### Importing
+
+1. Create a new Mii with Mii Studio.
+1. Save the Mii (you don't need to modify it, making a default Mii is fine since we're going to import it).
+1. On the Mii selection page, open the Mii that you just made.
+1. If your Mii isn't in the Studio format (which is 46 bytes) and is from a console, run the Mii you would like to convert through mii2studio if you haven't already.
+1. Open the Mii Studio Import/Export tool you bookmarked.  
+1. Press OK on the pop-up.
+1. Open the outputted Mii Studio file in a hex editor.
+1. Copy and paste the bytes of the Mii into the input field, without any spaces between the bytes.
+1. Refresh the page.
+1. Press "Continue editing" and the imported Mii should appear.
+1. Don't forget to save your Mii if you want to.
+
+### Exporting
+
+1. Make sure you're editing an existing Mii, not creating one.
+1. Open the Mii Studio Import/Export tool you bookmarked.
+1. Press Cancel on the pop-up.
+1. Your exported Mii should download.
+
 ## Kaitai Files
 
 [Kaitai](https://kaitai.io/) is an incredibly useful tool that can document file structures and read them. We use them to document the Mii file structures, and are used in mii2studio. The .ksy file is in the Kaitai language, and the .py is used at runtime for Python scripts (and can be compiled with [Kaitai's IDE](https://ide.kaitai.io/)).
