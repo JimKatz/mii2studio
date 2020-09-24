@@ -1,10 +1,7 @@
 import subprocess
 import sys
 from binascii import hexlify
-from Crypto.Cipher import AES
 from os import remove
-from PIL import Image
-from shutil import which
 from struct import pack
 
 if len(sys.argv) < 4:
@@ -16,6 +13,9 @@ if sys.argv[3] == "wii":
     orig_mii = Gen1Wii.from_file(sys.argv[1])
 elif sys.argv[3] == "3ds" or sys.argv[3] == "wiiu" or sys.argv[3] == "miitomo":
     from gen2_wiiu_3ds_miitomo import Gen2Wiiu3dsMiitomo
+    from Crypto.Cipher import AES
+    from PIL import Image
+    from shutil import which
     input_file = sys.argv[1]
     if ".png" in input_file.lower() or ".jpg" in input_file.lower() or ".jpeg" in input_file.lower():
         if which("zbarimg") is None:
@@ -116,7 +116,15 @@ else:
     studio_mii["face_wrinkles"] = orig_mii.face_wrinkles
 studio_mii["favorite_color"] = orig_mii.favorite_color
 studio_mii["gender"] = orig_mii.gender
-studio_mii["glasses_color"] = orig_mii.glasses_color
+if sys.argv[3] == "wii":
+    if orig_mii.glasses_color == 0:
+        studio_mii["glasses_color"] = 8
+    elif orig_mii.glasses_color < 6:
+        studio_mii["glasses_color"] = orig_mii.glasses_color + 13
+    else:
+        studio_mii["glasses_color"] = 0
+else:
+    studio_mii["glasses_color"] = orig_mii.glasses_color
 studio_mii["glasses_size"] = orig_mii.glasses_size
 studio_mii["glasses_type"] = orig_mii.glasses_type
 studio_mii["glasses_vertical"] = orig_mii.glasses_vertical
@@ -132,7 +140,13 @@ if sys.argv[3] == "wii":
     studio_mii["mouth_stretch"] = 3
 else:
     studio_mii["mouth_stretch"] = orig_mii.mouth_stretch
-studio_mii["mouth_color"] = orig_mii.mouth_color
+if sys.argv[3] == "wii":
+    if orig_mii.mouth_color < 4:
+        studio_mii["mouth_color"] = orig_mii.mouth_color + 19
+    else:
+        studio_mii["mouth_color"] = 0
+else:
+    studio_mii["mouth_color"] = orig_mii.mouth_color
 studio_mii["mouth_size"] = orig_mii.mouth_size
 studio_mii["mouth_type"] = orig_mii.mouth_type
 studio_mii["mouth_vertical"] = orig_mii.mouth_vertical
@@ -148,11 +162,11 @@ with open(sys.argv[2], "wb") as f:
     n = r = 256
     mii_data += hexlify(u8(0))
     for v in studio_mii.values():
-        eo = (7 + (v ^ n)) % 256
+        eo = (7 + (v ^ n)) % 256 # encode the Mii
         n = eo
         mii_data += hexlify(u8(eo))
         f.write(u8(v))
 
     f.close()
 
-    print("https://studio.mii.nintendo.com/miis/image.png?data=" + mii_data.decode("utf-8") + "&type=face&width=512&instanceCount=1")
+    print("Mii Render URL: https://studio.mii.nintendo.com/miis/image.png?data=" + mii_data.decode("utf-8") + "&type=face&width=512&instanceCount=1")
