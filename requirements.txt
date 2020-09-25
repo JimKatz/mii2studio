@@ -1,0 +1,3 @@
+PIL
+pycryptodome
+requests
