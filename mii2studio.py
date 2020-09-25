@@ -5,19 +5,50 @@ from os import remove
 from struct import pack
 
 if len(sys.argv) < 4:
-    print("Usage: python mii2studio.py <input mii file / qr code> <output studio mii file> <type (switch/wii/3ds/wiiu/miitomo)>")
+    print("Usage: python mii2studio.py <input mii file / qr code / cmoc entry number> <output studio mii file> <input type (switch/wii/3ds/wiiu/miitomo)>")
     exit()
 
 if sys.argv[3] == "wii":
     from gen1_wii import Gen1Wii
-    orig_mii = Gen1Wii.from_file(sys.argv[1])
+    try:
+        if len(sys.argv[1].replace("-", "")) <= 12 and "." not in sys.argv[1]:
+            print("Detected that the input is a Check Mii Out Channel entry number.")
+
+            num = int(format(int(sys.argv[1].replace("-", "")), '032b').zfill(40)[8:], 2)
+            num ^= 0x20070419
+            num ^= (num >> 0x1D) ^ (num >> 0x11) ^ (num >> 0x17)
+            num ^= (num & 0xF0F0F0F) << 4
+            num ^= ((num << 0x1E) ^ (num << 0x12) ^ (num << 0x18)) & 0xFFFFFFFF
+
+            print(num)
+
+            import requests
+
+            query = requests.get("https://miicontestp.wii.rc24.xyz/cgi-bin/search.cgi?entryno=" + str(num)).content
+
+            if len(query) != 32: # 32 = empty responser
+                with open("temp.mii", "wb") as f:
+                    f.write(query[56:130])
+            else:
+                print("Mii not found.")
+            
+            input_file = "temp.mii"
+    except ValueError:
+        input_file = "temp.mii"
+    
+    orig_mii = Gen1Wii.from_file("temp.mii")
+
+    if input_file == "temp.mii":
+        remove("temp.mii")
 elif sys.argv[3] == "3ds" or sys.argv[3] == "wiiu" or sys.argv[3] == "miitomo":
     from gen2_wiiu_3ds_miitomo import Gen2Wiiu3dsMiitomo
     from Crypto.Cipher import AES
     from PIL import Image
     from shutil import which
     input_file = sys.argv[1]
-    if ".png" in input_file.lower() or ".jpg" in input_file.lower() or ".jpeg" in input_file.lower():
+    if ".png" in input_file.lower() or ".jpg" in input_file.lower() or ".jpeg" in input_file.lower(): # crappy way to detect if input is an mage
+        print("Detected that the input is a Mii QR Code.")
+
         if which("zbarimg") is None:
             print("Error: Please install zbarimg.")
             exit()
@@ -52,14 +83,14 @@ studio_mii = {}
 def u8(data):
     return pack(">B", data)
 
-makeup = {
+makeup = { # lookup table
     1: 1,
     2: 6,
     3: 9,
     9: 10
 }
 
-wrinkles = {
+wrinkles = { # lookup table
     4: 5,
     5: 2,
     6: 3,
@@ -162,7 +193,7 @@ with open(sys.argv[2], "wb") as f:
     n = r = 256
     mii_data += hexlify(u8(0))
     for v in studio_mii.values():
-        eo = (7 + (v ^ n)) % 256 # encode the Mii
+        eo = (7 + (v ^ n)) % 256 # encode the Mii, Nintendo seemed to have randomized the encoding using Math.random() in JS, but we removed randomizing
         n = eo
         mii_data += hexlify(u8(eo))
         f.write(u8(v))
