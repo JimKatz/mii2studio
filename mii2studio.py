@@ -20,8 +20,6 @@ if sys.argv[3] == "wii":
             num ^= (num & 0xF0F0F0F) << 4
             num ^= ((num << 0x1E) ^ (num << 0x12) ^ (num << 0x18)) & 0xFFFFFFFF
 
-            print(num)
-
             import requests
 
             query = requests.get("https://miicontestp.wii.rc24.xyz/cgi-bin/search.cgi?entryno=" + str(num)).content
