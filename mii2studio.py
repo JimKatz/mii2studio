@@ -31,10 +31,12 @@ if sys.argv[3] == "wii":
                 print("Mii not found.")
             
             input_file = "temp.mii"
+        else:
+            input_file = sys.argv[1]
     except ValueError:
-        input_file = "temp.mii"
+        input_file = sys.argv[1]
     
-    orig_mii = Gen1Wii.from_file("temp.mii")
+    orig_mii = Gen1Wii.from_file(input_file)
 
     if input_file == "temp.mii":
         remove("temp.mii")
