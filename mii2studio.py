@@ -27,6 +27,7 @@ if sys.argv[3] == "wii":
             if len(query) != 32: # 32 = empty responser
                 with open("temp.mii", "wb") as f:
                     f.write(query[56:130])
+                    print(hexlify(query[56:130]))
             else:
                 print("Mii not found.")
             
@@ -100,7 +101,13 @@ wrinkles = { # lookup table
     11: 11
 }
 
-studio_mii["facial_hair_color"] = orig_mii.facial_hair_color
+if sys.argv[3] != "switch":
+    if orig_mii.facial_hair_color == 0:
+        studio_mii["facial_hair_color"] = 8
+    else:
+        studio_mii["facial_hair_color"] = orig_mii.facial_hair_color
+else:
+    studio_mii["facial_hair_color"] = orig_mii.facial_hair_color
 studio_mii["beard_goatee"] = orig_mii.facial_hair_beard
 studio_mii["body_weight"] = orig_mii.body_weight
 if sys.argv[3] == "wii":
@@ -120,7 +127,13 @@ if sys.argv[3] == "wii":
     studio_mii["eyebrow_stretch"] = 3
 else:
     studio_mii["eyebrow_stretch"] = orig_mii.eyebrow_stretch
-studio_mii["eyebrow_color"] = orig_mii.eyebrow_color
+if sys.argv[3] != "switch":
+    if orig_mii.eyebrow_color == 0:
+        studio_mii["eyebrow_color"] = 8
+    else:
+        studio_mii["eyebrow_color"] = orig_mii.eyebrow_color
+else:
+    studio_mii["eyebrow_color"] = orig_mii.eyebrow_color
 studio_mii["eyebrow_rotation"] = orig_mii.eyebrow_rotation
 studio_mii["eyebrow_size"] = orig_mii.eyebrow_size
 studio_mii["eyebrow_type"] = orig_mii.eyebrow_type
@@ -147,7 +160,7 @@ else:
     studio_mii["face_wrinkles"] = orig_mii.face_wrinkles
 studio_mii["favorite_color"] = orig_mii.favorite_color
 studio_mii["gender"] = orig_mii.gender
-if sys.argv[3] == "wii":
+if sys.argv[3] != "switch":
     if orig_mii.glasses_color == 0:
         studio_mii["glasses_color"] = 8
     elif orig_mii.glasses_color < 6:
@@ -159,7 +172,13 @@ else:
 studio_mii["glasses_size"] = orig_mii.glasses_size
 studio_mii["glasses_type"] = orig_mii.glasses_type
 studio_mii["glasses_vertical"] = orig_mii.glasses_vertical
-studio_mii["hair_color"] = orig_mii.hair_color
+if sys.argv[3] != "switch":
+    if orig_mii.hair_color == 0:
+        studio_mii["hair_color"] = 8
+    else:
+        studio_mii["hair_color"] = orig_mii.hair_color
+else:
+    studio_mii["hair_color"] = orig_mii.hair_color
 studio_mii["hair_flip"] = orig_mii.hair_flip
 studio_mii["hair_type"] = orig_mii.hair_type
 studio_mii["body_height"] = orig_mii.body_height
@@ -171,7 +190,7 @@ if sys.argv[3] == "wii":
     studio_mii["mouth_stretch"] = 3
 else:
     studio_mii["mouth_stretch"] = orig_mii.mouth_stretch
-if sys.argv[3] == "wii":
+if sys.argv[3] != "switch":
     if orig_mii.mouth_color < 4:
         studio_mii["mouth_color"] = orig_mii.mouth_color + 19
     else:
