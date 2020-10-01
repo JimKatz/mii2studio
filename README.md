@@ -8,7 +8,7 @@ mii2studio is a tool that can take any Mii from any generation and output it int
 
 Furthermore, the tool also outputs a link to the Mii rendered in PNG form, thanks to an API endpoint that Nintendo made (it's one of the coolest things ever). The Miis are encoded (probably due to obfuscation) and additional parameters for the API can be played with [here](https://pf2m.com/tools/mii/) (facial expressions, showing a full body, renders of multiple 360° angles of a Mii's body, etc). We use the Mii renderer for [our Check Mii Out Channel revival's companion site](https://miicontest.wii.rc24.xyz/). mii2studio can also read QR codes and Mii entry numbers from RiiConnect24's Check Mii Out Channel.
 
-Usage: `Usage: python mii2studio.py <input mii file / qr code / cmoc entry number> <output studio mii file> <input type (switch/wii/3ds/wiiu/miitomo)>`
+Usage: `python mii2studio.py <input mii file / qr code / cmoc entry number> <output studio mii file> <input type (switch/wii/3ds/wiiu/miitomo)>`
 
 ### List of Mii Generations
 
