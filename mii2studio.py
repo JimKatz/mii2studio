@@ -43,7 +43,6 @@ if sys.argv[3] == "wii":
 elif sys.argv[3] == "3ds" or sys.argv[3] == "wiiu" or sys.argv[3] == "miitomo":
     from gen2_wiiu_3ds_miitomo import Gen2Wiiu3dsMiitomo
     from Crypto.Cipher import AES
-    from PIL import Image
     from shutil import which
     input_file = sys.argv[1]
     if ".png" in input_file.lower() or ".jpg" in input_file.lower() or ".jpeg" in input_file.lower(): # crappy way to detect if input is an mage
