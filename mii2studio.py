@@ -24,10 +24,9 @@ if sys.argv[3] == "wii":
 
             query = requests.get("https://miicontestp.wii.rc24.xyz/cgi-bin/search.cgi?entryno=" + str(num)).content
 
-            if len(query) != 32: # 32 = empty responser
+            if len(query) != 32: # 32 = empty response
                 with open("temp.mii", "wb") as f:
                     f.write(query[56:130])
-                    print(hexlify(query[56:130]))
             else:
                 print("Mii not found.")
             
