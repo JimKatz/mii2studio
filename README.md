@@ -1,6 +1,6 @@
 # Mii-Tools
 
-This repository contains useful tools to manipulate Miis.
+This repository contains useful tools to manipulate Miis. Make sure you install the necessary requirements with pip: `pip install -r requirements.txt`
 
 ## mii2studio
 

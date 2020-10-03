@@ -1,3 +1,4 @@
-PIL
+Pillow
 pycryptodome
 requests
+kaitaistruct
