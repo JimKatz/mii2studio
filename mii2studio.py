@@ -102,7 +102,7 @@ wrinkles = { # lookup table
     11: 11
 }
 
-if sys.argv[3] != "switch":
+if sys.argv[3] != "switch" and sys.argv[3] != "ultimate":
     if orig_mii.facial_hair_color == 0:
         studio_mii["facial_hair_color"] = 8
     else:
@@ -115,7 +115,7 @@ if sys.argv[3] == "wii":
     studio_mii["eye_stretch"] = 3
 else:
     studio_mii["eye_stretch"] = orig_mii.eye_stretch
-if sys.argv[3] != "switch":
+if sys.argv[3] != "switch" and sys.argv[3] != "ultimate":
     studio_mii["eye_color"] = orig_mii.eye_color + 8
 else:
     studio_mii["eye_color"] = orig_mii.eye_color
@@ -128,7 +128,7 @@ if sys.argv[3] == "wii":
     studio_mii["eyebrow_stretch"] = 3
 else:
     studio_mii["eyebrow_stretch"] = orig_mii.eyebrow_stretch
-if sys.argv[3] != "switch":
+if sys.argv[3] != "switch" and sys.argv[3] != "ultimate":
     if orig_mii.eyebrow_color == 0:
         studio_mii["eyebrow_color"] = 8
     else:
@@ -161,7 +161,7 @@ else:
     studio_mii["face_wrinkles"] = orig_mii.face_wrinkles
 studio_mii["favorite_color"] = orig_mii.favorite_color
 studio_mii["gender"] = orig_mii.gender
-if sys.argv[3] != "switch":
+if sys.argv[3] != "switch" and sys.argv[3] != "ultimate":
     if orig_mii.glasses_color == 0:
         studio_mii["glasses_color"] = 8
     elif orig_mii.glasses_color < 6:
@@ -173,7 +173,7 @@ else:
 studio_mii["glasses_size"] = orig_mii.glasses_size
 studio_mii["glasses_type"] = orig_mii.glasses_type
 studio_mii["glasses_vertical"] = orig_mii.glasses_vertical
-if sys.argv[3] != "switch":
+if sys.argv[3] != "switch" and sys.argv[3] != "ultimate":
     if orig_mii.hair_color == 0:
         studio_mii["hair_color"] = 8
     else:
@@ -191,7 +191,7 @@ if sys.argv[3] == "wii":
     studio_mii["mouth_stretch"] = 3
 else:
     studio_mii["mouth_stretch"] = orig_mii.mouth_stretch
-if sys.argv[3] != "switch":
+if sys.argv[3] != "switch" and sys.argv[3] != "ultimate":
     if orig_mii.mouth_color < 4:
         studio_mii["mouth_color"] = orig_mii.mouth_color + 19
     else:
