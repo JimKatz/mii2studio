@@ -5,7 +5,7 @@ from os import remove
 from struct import pack
 
 if len(sys.argv) < 4:
-    print("Usage: python mii2studio.py <input mii file / qr code / cmoc entry number> <output studio mii file> <input type (wii/3ds/wiiu/miitomo/switch/ultimate/studio)>")
+    print("Usage: python mii2studio.py <input mii file / qr code / cmoc entry number> <output studio mii file> <input type (wii/3ds/wiiu/miitomo/switch/studio/ultimate)>")
     exit()
 
 if sys.argv[3] == "wii":
