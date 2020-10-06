@@ -5,7 +5,7 @@ from os import remove
 from struct import pack
 
 if len(sys.argv) < 4:
-    print("Usage: python mii2studio.py <input mii file / qr code / cmoc entry number> <output studio mii file> <input type (switch/wii/3ds/wiiu/miitomo)>")
+    print("Usage: python mii2studio.py <input mii file / qr code / cmoc entry number> <output studio mii file> <input type (wii/3ds/wiiu/miitomo/switch/ultimate)>")
     exit()
 
 if sys.argv[3] == "wii":
@@ -75,6 +75,9 @@ elif sys.argv[3] == "3ds" or sys.argv[3] == "wiiu" or sys.argv[3] == "miitomo":
 elif sys.argv[3] == "switch":
     from gen3_switch import Gen3Switch
     orig_mii = Gen3Switch.from_file(sys.argv[1])
+elif sys.argv[3] == "ultimate":
+    from gen3_ultimate import Gen3Ultimate
+    orig_mii = Gen3Ultimate.from_file(sys.argv[1])
 
 studio_mii = {}
 
