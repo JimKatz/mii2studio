@@ -4,21 +4,29 @@ This repository contains useful tools to manipulate Miis.
 
 ## mii2studio
 
-mii2studio is a tool written in Python that can take any Mii from any generation and output it into a file that [Mii Studio](https://accounts.nintendo.com/mii_studio) can load. Mii Studio is an online Mii editor that was made as a successor to Miitomo.
+mii2studio is a command-line tool written in Python that can take any Mii from any generation and output it into a file that [Mii Studio](https://accounts.nintendo.com/mii_studio) can load. Mii Studio is an online Mii editor that was made as a successor to Miitomo.
 
 Furthermore, the tool also outputs a link to the Mii rendered in PNG form, thanks to an API endpoint that Nintendo made (it's one of the coolest things ever). The Miis are encoded (probably due to obfuscation) and additional parameters for the API can be played with [here](https://pf2m.com/tools/mii/) (facial expressions, showing a full body, renders of multiple 360° angles of a Mii's body, etc). We use the Mii renderer for [our Check Mii Out Channel revival's companion site](https://miicontest.wii.rc24.xyz/).
 
 ### How to Use
 
-First, make sure you have Python 3 installed. Then, install the necessary requirements with pip: `pip install -r requirements.txt`
+First, make sure you have [Python 3](https://www.python.org/downloads/) installed. Then, install the necessary requirements with pip: `pip install -r requirements.txt`.
 
-This is the command syntax: `python mii2studio.py <input mii file / qr code / cmoc entry number> <output studio mii file> <input type (wii/3ds/wiiu/miitomo/switch/studio/ultimate)>`
+If you're wanting to read a Mii QR code, then install zbar.
 
-Examples:
+Windows: [Installer Link](https://sourceforge.net/projects/zbar/files/zbar/0.10/zbar-0.10-setup.exe/download)
+Mac: `brew install zbar` (make sure [Homebrew](https://brew.sh/) is installed)
+Linux: `sudo apt-get install zbar-tools`
+
+Command Syntax: `python mii2studio.py <input mii file / qr code / cmoc entry number> <output studio mii file> <input type (wii/3ds/wiiu/miitomo/switch/studio/ultimate)>`
+
+#### Examples
 
 Using a Mii binary file from a Wii: `python mii2studio.py /path/to/Bob.mii /path/to/Bob.studio wii`
 Using a 3DS QR Code: `python mii2studio.py "https://www.miicharacters.com/miis/qr_large/20150_bobross.jpg" /path/to/Bob.studio 3ds`
 Using a Check Mii Out Channel entry number: `python mii2studio.py 3136-3713-5980 /path/to/Bob.studio wii`
+
+The script will output the file ready to be used in Mii Studio, along with image URLs of the Mii's face and body rendered as PNGs.
 
 ### Input Types
 
