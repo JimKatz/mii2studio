@@ -21,7 +21,7 @@ Example of a rendered Mii:
 
 #### Installing zbar
 
-* Windows: [Installer Link](https://sourceforge.net/projects/zbar/files/zbar/0.10/zbar-0.10-setup.exe/download)
+* Windows: Currently looking into how to support zbar on Windows.
 * Mac: `brew install zbar` (make sure [Homebrew](https://brew.sh/) is installed)
 * Linux: `sudo apt-get install zbar-tools`
 
