@@ -8,21 +8,24 @@ mii2studio is a command-line tool written in Python that can take any Mii from a
 
 Furthermore, the tool also outputs a link to the Mii rendered in PNG form, thanks to an API endpoint that Nintendo made (it's one of the coolest things ever). The Miis are encoded (probably due to obfuscation) and additional parameters for the API can be played with [here](https://pf2m.com/tools/mii/) (facial expressions, showing a full body, renders of multiple 360° angles of a Mii's body, etc). We use the Mii renderer for [our Check Mii Out Channel revival's companion site](https://miicontest.wii.rc24.xyz/).
 
+Example of a rendered Mii:
+
+![Matt](https://studio.mii.nintendo.com/miis/image.png?data=00070c5357666c76616c6971788487959e979a97979ea6adacafb6c3c9d0d59c9fa6abc6cce6e9e8eeeff3ff01090a&type=face&width=512&instanceCount=1)
+
+### How to Install
+
+1. First, make sure you have [Python 3](https://www.python.org/downloads/) installed.
+1. Then, clone this Git repository using `git clone` or downloading a zip file of it.
+1. Next, install the necessary requirements with pip: `pip install -r requirements.txt`.
+1. If you're wanting to read a Mii QR code, then install zbar.
+
+#### Installing zbar
+
+* Windows: [Installer Link](https://sourceforge.net/projects/zbar/files/zbar/0.10/zbar-0.10-setup.exe/download)
+* Mac: `brew install zbar` (make sure [Homebrew](https://brew.sh/) is installed)
+* Linux: `sudo apt-get install zbar-tools`
+
 ### How to Use
-
-First, make sure you have [Python 3](https://www.python.org/downloads/) installed.
-
-Then, clone this Git repository using `git clone` or downloading a zip file of it.
-
-Next, install the necessary requirements with pip: `pip install -r requirements.txt`.
-
-If you're wanting to read a Mii QR code, then install zbar.
-
-Windows: [Installer Link](https://sourceforge.net/projects/zbar/files/zbar/0.10/zbar-0.10-setup.exe/download)
-
-Mac: `brew install zbar` (make sure [Homebrew](https://brew.sh/) is installed)
-
-Linux: `sudo apt-get install zbar-tools`
 
 Command Syntax: `python mii2studio.py <input mii file / qr code / cmoc entry number> <output studio mii file> <input type (wii/3ds/wiiu/miitomo/switch/studio/ultimate)>`
 
