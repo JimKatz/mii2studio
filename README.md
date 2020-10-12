@@ -31,11 +31,9 @@ Command Syntax: `python mii2studio.py <input mii file / qr code / cmoc entry num
 
 #### Examples
 
-Using a Mii binary file from a Wii: `python mii2studio.py /path/to/Bob.mii /path/to/Bob.studio wii`
-
-Using a 3DS QR Code: `python mii2studio.py "https://www.miicharacters.com/miis/qr_large/20150_bobross.jpg" /path/to/Bob.studio 3ds`
-
-Using a Check Mii Out Channel entry number: `python mii2studio.py 3136-3713-5980 /path/to/Bob.studio wii`
+* Using a Mii binary file from a Wii: `python mii2studio.py /path/to/Bob.mii /path/to/Bob.studio wii`
+* Using a 3DS QR Code: `python mii2studio.py "https://www.miicharacters.com/miis/qr_large/20150_bobross.jpg" /path/to/Bob.studio 3ds`
+* Using a Check Mii Out Channel entry number: `python mii2studio.py 3136-3713-5980 /path/to/Bob.studio wii`
 
 The script will output the file ready to be used in Mii Studio, along with image URLs of the Mii's face and body rendered as PNGs.
 
