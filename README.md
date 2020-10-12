@@ -1,6 +1,6 @@
 # Mii-Tools
 
-This repository contains useful tools to manipulate Miis. Make sure you install the necessary requirements with pip: `pip install -r requirements.txt`
+This repository contains useful tools to manipulate Miis.
 
 ## mii2studio
 
@@ -8,7 +8,17 @@ mii2studio is a tool written in Python that can take any Mii from any generation
 
 Furthermore, the tool also outputs a link to the Mii rendered in PNG form, thanks to an API endpoint that Nintendo made (it's one of the coolest things ever). The Miis are encoded (probably due to obfuscation) and additional parameters for the API can be played with [here](https://pf2m.com/tools/mii/) (facial expressions, showing a full body, renders of multiple 360° angles of a Mii's body, etc). We use the Mii renderer for [our Check Mii Out Channel revival's companion site](https://miicontest.wii.rc24.xyz/).
 
-Usage: `python mii2studio.py <input mii file / qr code / cmoc entry number> <output studio mii file> <input type (wii/3ds/wiiu/miitomo/switch/studio/ultimate)>`
+### How to Use
+
+First, make sure you have Python 3 installed. Then, install the necessary requirements with pip: `pip install -r requirements.txt`
+
+This is the command syntax: `python mii2studio.py <input mii file / qr code / cmoc entry number> <output studio mii file> <input type (wii/3ds/wiiu/miitomo/switch/studio/ultimate)>`
+
+Examples:
+
+Using a Mii binary file from a Wii: `python mii2studio.py /path/to/Bob.mii /path/to/Bob.studio wii`
+Using a 3DS QR Code: `python mii2studio.py "https://www.miicharacters.com/miis/qr_large/20150_bobross.jpg" /path/to/Bob.studio 3ds`
+Using a Check Mii Out Channel entry number: `python mii2studio.py 3136-3713-5980 /path/to/Bob.studio wii`
 
 ### Input Types
 
@@ -72,5 +82,6 @@ It's possible to import or export a Mii from Mii Studio. To do that, please foll
 
 * bendevnull
 * HEYimHeroic
+* jaames for the [Mii QR decrypting script](https://gist.github.com/jaames/96ce8daa11b61b758b6b0227b55f9f78)
 * Larsenv
 * Matthe815

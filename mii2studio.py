@@ -20,9 +20,9 @@ if sys.argv[3] == "wii":
             num ^= (num & 0xF0F0F0F) << 4
             num ^= ((num << 0x1E) ^ (num << 0x12) ^ (num << 0x18)) & 0xFFFFFFFF
 
-            import requests
+            from requests import get
 
-            query = requests.get("https://miicontestp.wii.rc24.xyz/cgi-bin/search.cgi?entryno=" + str(num)).content
+            query = get("https://miicontestp.wii.rc24.xyz/cgi-bin/search.cgi?entryno=" + str(num)).content
 
             if len(query) != 32: # 32 = empty response
                 with open("temp.mii", "wb") as f:
@@ -46,7 +46,18 @@ elif sys.argv[3] == "3ds" or sys.argv[3] == "wiiu" or sys.argv[3] == "miitomo":
     from shutil import which
     input_file = sys.argv[1]
     if ".png" in input_file.lower() or ".jpg" in input_file.lower() or ".jpeg" in input_file.lower(): # crappy way to detect if input is an mage
-        print("Detected that the input is a Mii QR Code.")
+        if "http" in input_file.lower():
+            print("Detected that the input is a URL to a Mii QR Code.")
+
+            from requests import get
+
+            with open("temp", "wb") as f:
+                f.write(get(input_file).content)
+                f.close()
+            
+            input_file = "temp"
+        else:
+            print("Detected that the input is a Mii QR Code.")
 
         if which("zbarimg") is None:
             print("Error: Please install zbarimg.")
