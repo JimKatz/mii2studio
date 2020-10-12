@@ -39,7 +39,10 @@ if sys.argv[3] == "wii":
     orig_mii = Gen1Wii.from_file(input_file)
 
     if input_file == "temp.mii":
-        remove("temp.mii")
+        try:
+            remove("temp.mii")
+        except PermissionError:
+            print("Unable to remove temporary file.")
 elif sys.argv[3] == "3ds" or sys.argv[3] == "wiiu" or sys.argv[3] == "miitomo":
     from gen2_wiiu_3ds_miitomo import Gen2Wiiu3dsMiitomo
     from Crypto.Cipher import AES
@@ -82,7 +85,10 @@ elif sys.argv[3] == "3ds" or sys.argv[3] == "wiiu" or sys.argv[3] == "miitomo":
     orig_mii = Gen2Wiiu3dsMiitomo.from_file(input_file)
 
     if input_file == "temp.mii":
-        remove("temp.mii")
+        try:
+            remove("temp.mii")
+        except PermissionError:
+            print("Unable to remove temporary file.")
 elif sys.argv[3] == "switch":
     from gen3_switch import Gen3Switch
     orig_mii = Gen3Switch.from_file(sys.argv[1])
