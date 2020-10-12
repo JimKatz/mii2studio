@@ -19,7 +19,9 @@ Next, install the necessary requirements with pip: `pip install -r requirements.
 If you're wanting to read a Mii QR code, then install zbar.
 
 Windows: [Installer Link](https://sourceforge.net/projects/zbar/files/zbar/0.10/zbar-0.10-setup.exe/download)
+
 Mac: `brew install zbar` (make sure [Homebrew](https://brew.sh/) is installed)
+
 Linux: `sudo apt-get install zbar-tools`
 
 Command Syntax: `python mii2studio.py <input mii file / qr code / cmoc entry number> <output studio mii file> <input type (wii/3ds/wiiu/miitomo/switch/studio/ultimate)>`
