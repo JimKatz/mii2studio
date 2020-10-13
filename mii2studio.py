@@ -2,6 +2,7 @@ import subprocess
 import sys
 from binascii import hexlify
 from os import remove
+from requests import get, post
 from struct import pack
 
 if len(sys.argv) < 4:
@@ -19,8 +20,6 @@ if sys.argv[3] == "wii":
             num ^= (num >> 0x1D) ^ (num >> 0x11) ^ (num >> 0x17)
             num ^= (num & 0xF0F0F0F) << 4
             num ^= ((num << 0x1E) ^ (num << 0x12) ^ (num << 0x18)) & 0xFFFFFFFF
-
-            from requests import get
 
             query = get("https://miicontestp.wii.rc24.xyz/cgi-bin/search.cgi?entryno=" + str(num)).content
 
@@ -52,8 +51,6 @@ elif sys.argv[3] == "3ds" or sys.argv[3] == "wiiu" or sys.argv[3] == "miitomo":
         if "http" in input_file.lower():
             print("Detected that the input is a URL to a Mii QR Code.")
 
-            from requests import get
-
             with open("temp", "wb") as f:
                 f.write(get(input_file).content)
                 f.close()
@@ -62,12 +59,9 @@ elif sys.argv[3] == "3ds" or sys.argv[3] == "wiiu" or sys.argv[3] == "miitomo":
         else:
             print("Detected that the input is a Mii QR Code.")
 
-        if which("zbarimg") is None:
-            print("Error: Please install zbarimg.")
-            exit()
-
-        zbar = subprocess.Popen(["zbarimg", "--raw", "--oneshot", "-Sbinary", input_file], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        decoded_qr = zbar.communicate()[0]
+        with open(input_file, "rb") as f:
+            read = f.read()
+            decoded_qr = post("https://qrcode.rc24.xyz/qrcode.php", {"image": read}).content # zbar sucks to run on a client so we use this api
 
         # https://gist.github.com/jaames/96ce8daa11b61b758b6b0227b55f9f78
 

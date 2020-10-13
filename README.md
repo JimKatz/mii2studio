@@ -17,13 +17,6 @@ Example of a rendered Mii:
 1. First, make sure you have [Python 3](https://www.python.org/downloads/) installed.
 1. Then, clone this Git repository using `git clone` or downloading a zip file of it.
 1. Next, install the necessary requirements with pip: `pip install -r requirements.txt`.
-1. If you're wanting to read a Mii QR code, then install zbar.
-
-#### Installing zbar
-
-* Windows: Currently looking into how to support zbar on Windows.
-* Mac: `brew install zbar` (make sure [Homebrew](https://brew.sh/) is installed)
-* Linux: `sudo apt-get install zbar-tools`
 
 ### How to Use
 
