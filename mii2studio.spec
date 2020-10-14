@@ -8,7 +8,7 @@ a = Analysis(['mii2studio.py'],
              datas=[('gen1_wii.py', './'),
 					('gen2_wiiu_3ds_miitomo.py', './'),
 					('gen3_switch.py', './'),
-					('gen3_switchgame.py', './')]
+					('gen3_switchgame.py', './')],
              hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],
