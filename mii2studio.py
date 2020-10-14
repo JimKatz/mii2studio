@@ -5,17 +5,26 @@ from os import remove
 from requests import get, post
 from struct import pack
 
-if len(sys.argv) < 4:
-    print("Usage: python mii2studio.py <input mii file / qr code / cmoc entry number> <output studio mii file> <input type (wii/3ds/wiiu/miitomo/switch/studio/ultimate)>")
-    exit()
+print("mii2studio by Larsenv\n")
 
-if sys.argv[3] == "wii":
+if len(sys.argv) < 4:
+    print("CLI Usage: python mii2studio.py <input mii file / qr code / cmoc entry number> <output studio mii file> <input type (wii/3ds/wiiu/miitomo/switch/switchgame/studio)>\n")
+    input_file = input("Enter the path to the input file (binary file or QR Code), a CMOC entry number, or a URL to a QR Code: ")
+    output_file = input("Enter the path to the output file (which will be importable with Mii Studio): ")
+    input_type = input("Enter the input type (wii/3ds/wiiu/miitomo/switch/switchgame/studio): ")
+    print("")
+else:
+    input_file = sys.argv[1]
+    output_file = sys.argv[2]
+    input_type = sys.argv[3]
+
+if input_type == "wii":
     from gen1_wii import Gen1Wii
     try:
-        if len(sys.argv[1].replace("-", "")) <= 12 and "." not in sys.argv[1]:
-            print("Detected that the input is a Check Mii Out Channel entry number.")
+        if len(input_file.replace("-", "")) <= 12 and "." not in input_file:
+            print("Detected that the input is a Check Mii Out Channel entry number.\n")
 
-            num = int(format(int(sys.argv[1].replace("-", "")), '032b').zfill(40)[8:], 2)
+            num = int(format(int(input_file.replace("-", "")), '032b').zfill(40)[8:], 2)
             num ^= 0x20070419
             num ^= (num >> 0x1D) ^ (num >> 0x11) ^ (num >> 0x17)
             num ^= (num & 0xF0F0F0F) << 4
@@ -31,9 +40,9 @@ if sys.argv[3] == "wii":
             
             input_file = "temp.mii"
         else:
-            input_file = sys.argv[1]
+            input_file = input_file
     except ValueError:
-        input_file = sys.argv[1]
+        input_file = input_file
     
     orig_mii = Gen1Wii.from_file(input_file)
 
@@ -42,14 +51,13 @@ if sys.argv[3] == "wii":
             remove("temp.mii")
         except PermissionError:
             print("Unable to remove temporary file.")
-elif sys.argv[3] == "3ds" or sys.argv[3] == "wiiu" or sys.argv[3] == "miitomo":
+elif input_type == "3ds" or input_type == "wiiu" or input_type == "miitomo":
     from gen2_wiiu_3ds_miitomo import Gen2Wiiu3dsMiitomo
     from Crypto.Cipher import AES
     from shutil import which
-    input_file = sys.argv[1]
     if ".png" in input_file.lower() or ".jpg" in input_file.lower() or ".jpeg" in input_file.lower(): # crappy way to detect if input is an mage
         if "http" in input_file.lower():
-            print("Detected that the input is a URL to a Mii QR Code.")
+            print("Detected that the input is a URL to a Mii QR Code.\n")
 
             with open("temp", "wb") as f:
                 f.write(get(input_file).content)
@@ -57,7 +65,7 @@ elif sys.argv[3] == "3ds" or sys.argv[3] == "wiiu" or sys.argv[3] == "miitomo":
             
             input_file = "temp"
         else:
-            print("Detected that the input is a Mii QR Code.")
+            print("Detected that the input is a Mii QR Code.\n")
 
         with open(input_file, "rb") as f:
             read = f.read()
@@ -83,17 +91,20 @@ elif sys.argv[3] == "3ds" or sys.argv[3] == "wiiu" or sys.argv[3] == "miitomo":
             remove("temp.mii")
         except PermissionError:
             print("Unable to remove temporary file.")
-elif sys.argv[3] == "switch":
+elif input_type == "switch":
     from gen3_switch import Gen3Switch
-    orig_mii = Gen3Switch.from_file(sys.argv[1])
-elif sys.argv[3] == "ultimate":
-    from gen3_ultimate import Gen3Ultimate
-    orig_mii = Gen3Ultimate.from_file(sys.argv[1])
+    orig_mii = Gen3Switch.from_file(input_file)
+elif input_type == "switchgame":
+    from gen3_switchgame import Gen3SwitchGame
+    orig_mii = Gen3SwitchGame.from_file(sys.argv[1])
+else:
+    print("Error: Invalid input type.")
+    exit()
 
 def u8(data):
     return pack(">B", data)
 
-if sys.argv[3] != "studio":
+if input_type != "studio":
     studio_mii = {}
 
     makeup = { # lookup table
@@ -113,7 +124,7 @@ if sys.argv[3] != "studio":
         11: 11
     }
 
-    if sys.argv[3] != "switch" and sys.argv[3] != "ultimate":
+    if "switch" not in input_type:
         if orig_mii.facial_hair_color == 0:
             studio_mii["facial_hair_color"] = 8
         else:
@@ -122,11 +133,11 @@ if sys.argv[3] != "studio":
         studio_mii["facial_hair_color"] = orig_mii.facial_hair_color
     studio_mii["beard_goatee"] = orig_mii.facial_hair_beard
     studio_mii["body_weight"] = orig_mii.body_weight
-    if sys.argv[3] == "wii":
+    if input_type == "wii":
         studio_mii["eye_stretch"] = 3
     else:
         studio_mii["eye_stretch"] = orig_mii.eye_stretch
-    if sys.argv[3] != "switch" and sys.argv[3] != "ultimate":
+    if "switch" not in input_type:
         studio_mii["eye_color"] = orig_mii.eye_color + 8
     else:
         studio_mii["eye_color"] = orig_mii.eye_color
@@ -135,11 +146,11 @@ if sys.argv[3] != "studio":
     studio_mii["eye_type"] = orig_mii.eye_type
     studio_mii["eye_horizontal"] = orig_mii.eye_horizontal
     studio_mii["eye_vertical"] = orig_mii.eye_vertical
-    if sys.argv[3] == "wii":
+    if input_type == "wii":
         studio_mii["eyebrow_stretch"] = 3
     else:
         studio_mii["eyebrow_stretch"] = orig_mii.eyebrow_stretch
-    if sys.argv[3] != "switch" and sys.argv[3] != "ultimate":
+    if "switch" not in input_type:
         if orig_mii.eyebrow_color == 0:
             studio_mii["eyebrow_color"] = 8
         else:
@@ -150,12 +161,12 @@ if sys.argv[3] != "studio":
     studio_mii["eyebrow_size"] = orig_mii.eyebrow_size
     studio_mii["eyebrow_type"] = orig_mii.eyebrow_type
     studio_mii["eyebrow_horizontal"] = orig_mii.eyebrow_horizontal
-    if sys.argv[3] != "switch":
+    if input_type != "switch":
         studio_mii["eyebrow_vertical"] = orig_mii.eyebrow_vertical
     else:
         studio_mii["eyebrow_vertical"] = orig_mii.eyebrow_vertical + 3
     studio_mii["face_color"] = orig_mii.face_color
-    if sys.argv[3] == "wii":
+    if input_type == "wii":
         if orig_mii.facial_feature in makeup:
             studio_mii["face_makeup"] = makeup[orig_mii.facial_feature]
         else:
@@ -163,7 +174,7 @@ if sys.argv[3] != "studio":
     else:
         studio_mii["face_makeup"] = orig_mii.face_makeup
     studio_mii["face_type"] = orig_mii.face_type
-    if sys.argv[3] == "wii":
+    if input_type == "wii":
         if orig_mii.facial_feature in wrinkles:
             studio_mii["face_wrinkles"] = wrinkles[orig_mii.facial_feature]
         else:
@@ -172,7 +183,7 @@ if sys.argv[3] != "studio":
         studio_mii["face_wrinkles"] = orig_mii.face_wrinkles
     studio_mii["favorite_color"] = orig_mii.favorite_color
     studio_mii["gender"] = orig_mii.gender
-    if sys.argv[3] != "switch" and sys.argv[3] != "ultimate":
+    if "switch" not in input_type:
         if orig_mii.glasses_color == 0:
             studio_mii["glasses_color"] = 8
         elif orig_mii.glasses_color < 6:
@@ -184,7 +195,7 @@ if sys.argv[3] != "studio":
     studio_mii["glasses_size"] = orig_mii.glasses_size
     studio_mii["glasses_type"] = orig_mii.glasses_type
     studio_mii["glasses_vertical"] = orig_mii.glasses_vertical
-    if sys.argv[3] != "switch" and sys.argv[3] != "ultimate":
+    if "switch" not in input_type:
         if orig_mii.hair_color == 0:
             studio_mii["hair_color"] = 8
         else:
@@ -198,11 +209,11 @@ if sys.argv[3] != "studio":
     studio_mii["mole_enable"] = orig_mii.mole_enable
     studio_mii["mole_horizontal"] = orig_mii.mole_horizontal
     studio_mii["mole_vertical"] = orig_mii.mole_vertical
-    if sys.argv[3] == "wii":
+    if input_type == "wii":
         studio_mii["mouth_stretch"] = 3
     else:
         studio_mii["mouth_stretch"] = orig_mii.mouth_stretch
-    if sys.argv[3] != "switch" and sys.argv[3] != "ultimate":
+    if "switch" not in input_type:
         if orig_mii.mouth_color < 4:
             studio_mii["mouth_color"] = orig_mii.mouth_color + 19
         else:
@@ -219,12 +230,12 @@ if sys.argv[3] != "studio":
     studio_mii["nose_type"] = orig_mii.nose_type
     studio_mii["nose_vertical"] = orig_mii.nose_vertical
 
-with open(sys.argv[2], "wb") as f:
+with open(output_file, "wb") as f:
     mii_data = b""
     n = r = 256
     mii_dict = []
-    if sys.argv[3] == "studio":
-        with open(sys.argv[1], "rb") as g:
+    if input_type == "studio":
+        with open(input_file, "rb") as g:
             read = g.read()
             g.close()
         
@@ -241,10 +252,14 @@ with open(sys.argv[2], "wb") as f:
 
     f.close()
 
+    print("Mii Studio file written to " + output_file + ".\n")
+
     url = "https://studio.mii.nintendo.com/miis/image.png?data=" + mii_data.decode("utf-8")
 
     print("Mii Render URLs:\n")
     print("Face: " + url + "&type=face&width=512&instanceCount=1")
     print("Body: " + url + "&type=all_body&width=512&instanceCount=1")
     print("Face (16x): " + url + "&type=face&width=512&instanceCount=16")
-    print("Body (16x): " + url + "&type=all_body&width=512&instanceCount=16")
+    print("Body (16x): " + url + "&type=all_body&width=512&instanceCount=16\n")
+
+    print("Completed Successfully")

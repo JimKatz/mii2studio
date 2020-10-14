@@ -20,7 +20,9 @@ Example of a rendered Mii:
 
 ### How to Use
 
-Command Syntax: `python mii2studio.py <input mii file / qr code / cmoc entry number> <output studio mii file> <input type (wii/3ds/wiiu/miitomo/switch/studio/ultimate)>`
+Command Syntax: `python mii2studio.py <input mii file / qr code / cmoc entry number> <output studio mii file> <input type (wii/3ds/wiiu/miitomo/switch/switchgame/studio)>`
+
+The script can also be ran without parameters.
 
 #### Examples
 
