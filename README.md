@@ -56,7 +56,7 @@ You can use these types of Miis with this script:
 
 * Generation 1: Wii (and DS?)
 * Generation 2: 3DS, Wii U, and [Miitomo](https://kaeru.world/projects/kaerutomo)
-* Generation 3: Switch, Mii Studio, and Super Smash Bros. Ultimate
+* Generation 3: Switch and Mii Studio
 
 ## Importing/Exporting to Mii Studio
 
