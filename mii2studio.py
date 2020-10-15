@@ -105,6 +105,21 @@ def u8(data):
     return pack(">B", data)
 
 if input_type != "studio":
+    print("Mii Info:\n")
+    
+    print("Mii Name: " + orig_mii.mii_name)
+    
+    if "switch" not in input_type:
+        if orig_mii.creator_name != "\0" * 10:
+            print("Creator Name: " + orig_mii.creator_name)
+        if orig_mii.birth_month != 0 and orig_mii.birth_day != 0:
+            print("Birthday: " + str(orig_mii.birth_month).zfill(2) + "/" + str(orig_mii.birth_day).zfill(2) + " (MM/DD)")
+        
+    print("Gender: " + "Male" if orig_mii.gender == 1 else "Gender: Female")
+
+    if "switch" not in input_type:
+        print("")
+
     studio_mii = {}
 
     makeup = { # lookup table
@@ -252,8 +267,6 @@ with open(output_file, "wb") as f:
 
     f.close()
 
-    print("Mii Studio file written to " + output_file + ".\n")
-
     url = "https://studio.mii.nintendo.com/miis/image.png?data=" + mii_data.decode("utf-8")
 
     print("Mii Render URLs:\n")
@@ -261,5 +274,7 @@ with open(output_file, "wb") as f:
     print("Body: " + url + "&type=all_body&width=512&instanceCount=1")
     print("Face (16x): " + url + "&type=face&width=512&instanceCount=16")
     print("Body (16x): " + url + "&type=all_body&width=512&instanceCount=16\n")
+
+    print("Mii Studio file written to " + output_file + ".\n")
 
     print("Completed Successfully")
