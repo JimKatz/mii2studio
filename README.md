@@ -10,7 +10,7 @@ Furthermore, the tool also outputs a link to the Mii rendered in PNG form, thank
 
 Example of a rendered Mii:
 
-![Matt](https://studio.mii.nintendo.com/miis/image.png?data=00070c5357666c76616c6971788487959e979a97979ea6adacafb6c3c9d0d59c9fa6abc6cce6e9e8eeeff3ff01090a&type=face&width=512&instanceCount=1)
+![Matt](https://studio.mii.nintendo.com/miis/image.png?data=000f145b5f5e646e49546169687477858e878a87878e969d9c9fa6b3b9c0e5acafb6bbb6bcb6b9b8bebfc3cfd1d9da&type=face&width=512&instanceCount=1)
 
 ### How to Install
 
