@@ -37,9 +37,9 @@ seq:
     type: b1
   - id: always_set
     type: b1
-  - id: mii_id
+  - id: avatar_id
     type: b28
-  - id: creator_mac
+  - id: client_id
     type: u1
     repeat: expr
     repeat-expr: 6

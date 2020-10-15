@@ -36,11 +36,11 @@ class Gen2Wiiu3dsMiitomo(KaitaiStruct):
         self.dsi_mii = self._io.read_bits_int(1) != 0
         self.temporary_mii = self._io.read_bits_int(1) != 0
         self.always_set = self._io.read_bits_int(1) != 0
-        self.mii_id = self._io.read_bits_int(28)
+        self.avatar_id = self._io.read_bits_int(28)
         self._io.align_to_byte()
-        self.creator_mac = [None] * (6)
+        self.client_id = [None] * (6)
         for i in range(6):
-            self.creator_mac[i] = self._io.read_u1()
+            self.client_id[i] = self._io.read_u1()
 
         self.padding = self._io.read_u2le()
         self.data_1 = self._io.read_u2le()

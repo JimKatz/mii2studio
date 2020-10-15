@@ -113,12 +113,64 @@ if input_type != "studio":
         if orig_mii.creator_name != "\0" * 10:
             print("Creator Name: " + orig_mii.creator_name)
         if orig_mii.birth_month != 0 and orig_mii.birth_day != 0:
-            print("Birthday: " + str(orig_mii.birth_month).zfill(2) + "/" + str(orig_mii.birth_day).zfill(2) + " (MM/DD)")
+            print("Birthday: " + str(orig_mii.birth_month).zfill(2) +
+                  "/" + str(orig_mii.birth_day).zfill(2) + " (MM/DD)")
+
+    favorite_colors = {
+        0: "Red",
+        1: "Orange",
+        2: "Yellow",
+        3: "Light Green",
+        4: "Green",
+        5: "Blue",
+        6: "Light Blue",
+        7: "Pink",
+        8: "Purple",
+        9: "Brown",
+        10: "White",
+        11: "Black"
+    }
+
+    print("Favorite Color: " + favorite_colors[orig_mii.favorite_color])
+    
+    print("Body Height: " + str(orig_mii.body_height) + "%")
+    print("Body Weight: " + str(orig_mii.body_weight) + "%")
+
+    mii_types = {
+        0x00: "Special Mii - Gold Pants",
+        0x20: "Normal Mii - Black Pants",
+        0x40: "Special Mii - Gold Pants",
+        0x60: "Normal Mii - Black Pants",
+        0xC0: "Foreign Mii - Blue Pants (uneditable)",
+        0xE0: "Normal Mii - Black Pants",
+        0x100: "???"
+    }
+    
+    if input_type == "wii":
+        mii_type = ""
+        i = ""
+
+        for k,v in mii_types.items():
+            if k >= orig_mii.avatar_id[0]:
+                mii_type = i
+                break
+            i = v
+
+        print("Mii Type: " + mii_type)
         
     if input_type == "wii":
-        print("Gender: " + "Male" if orig_mii.gender == 0 else "Gender: Female")
+        print("Gender: Male" if orig_mii.gender == 0 else "Gender: Female")
     else:
-        print("Gender: " + "Male" if orig_mii.gender == 1 else "Gender: Female")
+        print("Gender: Male" if orig_mii.gender == 1 else "Gender: Female")
+
+    if "switch" not in input_type:
+        print("Mingle: Yes" if orig_mii.mingle == 1 else "Mingle: No")
+    
+    if "switch" not in input_type and input_type != "wii":
+        print("Copying: Yes" if orig_mii.copying == 1 else "Copying: No")
+
+    if input_type == "wii":
+        print("Downloaded from CMOC: Yes" if orig_mii.downloaded == 1 else "Downloaded from CMOC: No")
 
     if "switch" not in input_type:
         print("")
