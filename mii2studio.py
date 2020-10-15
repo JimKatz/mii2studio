@@ -115,7 +115,10 @@ if input_type != "studio":
         if orig_mii.birth_month != 0 and orig_mii.birth_day != 0:
             print("Birthday: " + str(orig_mii.birth_month).zfill(2) + "/" + str(orig_mii.birth_day).zfill(2) + " (MM/DD)")
         
-    print("Gender: " + "Male" if orig_mii.gender == 1 else "Gender: Female")
+    if input_type == "wii":
+        print("Gender: " + "Male" if orig_mii.gender == 0 else "Gender: Female")
+    else:
+        print("Gender: " + "Male" if orig_mii.gender == 1 else "Gender: Female")
 
     if "switch" not in input_type:
         print("")
