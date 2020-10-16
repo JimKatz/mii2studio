@@ -254,7 +254,10 @@ if input_type != "studio":
     else:
         studio_mii["face_wrinkles"] = orig_mii.face_wrinkles
     studio_mii["favorite_color"] = orig_mii.favorite_color
-    studio_mii["gender"] = orig_mii.gender
+    if input_type == "wii":
+        studio_mii["gender"] = 0 if orig_mii.gender == 0 else 1
+    else:
+        studio_mii["gender"] = 1 if orig_mii.gender == 0 else 0
     if "switch" not in input_type:
         if orig_mii.glasses_color == 0:
             studio_mii["glasses_color"] = 8
