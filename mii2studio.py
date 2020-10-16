@@ -24,7 +24,7 @@ if input_type == "wii":
         if len(input_file.replace("-", "")) <= 12 and "." not in input_file:
             print("Detected that the input is a Check Mii Out Channel entry number.\n")
 
-            num = int(format(int(input_file.replace("-", "")), '032b').zfill(40)[8:], 2)
+            num = int(format(int(input_file.replace("-", "")), '032b').zfill(40)[8:], 2) # the cmoc entry numbr is scrambled using a lot of bitwise operations
             num ^= 0x20070419
             num ^= (num >> 0x1D) ^ (num >> 0x11) ^ (num >> 0x17)
             num ^= (num & 0xF0F0F0F) << 4
@@ -34,7 +34,7 @@ if input_type == "wii":
 
             if len(query) != 32: # 32 = empty response
                 with open("temp.mii", "wb") as f:
-                    f.write(query[56:130])
+                    f.write(query[56:130]) # cut the Mii out of the file
             else:
                 print("Mii not found.")
             
@@ -54,7 +54,6 @@ if input_type == "wii":
 elif input_type == "3ds" or input_type == "wiiu" or input_type == "miitomo":
     from gen2_wiiu_3ds_miitomo import Gen2Wiiu3dsMiitomo
     from Crypto.Cipher import AES
-    from shutil import which
     if ".png" in input_file.lower() or ".jpg" in input_file.lower() or ".jpeg" in input_file.lower(): # crappy way to detect if input is an mage
         if "http" in input_file.lower():
             print("Detected that the input is a URL to a Mii QR Code.\n")
@@ -146,7 +145,7 @@ if input_type != "studio":
         0x100: "???"
     }
     
-    if input_type == "wii":
+    if input_type != "switch":
         mii_type = ""
         i = ""
 
@@ -172,8 +171,7 @@ if input_type != "studio":
     if input_type == "wii":
         print("Downloaded from CMOC: Yes" if orig_mii.downloaded == 1 else "Downloaded from CMOC: No")
 
-    if "switch" not in input_type:
-        print("")
+    print("")
 
     studio_mii = {}
 
@@ -193,6 +191,10 @@ if input_type != "studio":
         10: 9,
         11: 11
     }
+
+    # ue generate the Mii Studio file by reading each Mii format from the Kaitai files.
+    # unlike consoles which store Mii data in an odd number of bits,
+    # all the Mii data for a Mii Studio Mii is stored as unsigned 8-bit integers. makes it easier.
 
     if "switch" not in input_type:
         if orig_mii.facial_hair_color == 0:
@@ -315,7 +317,7 @@ with open(output_file, "wb") as f:
         mii_dict = studio_mii.values()
     mii_data += hexlify(u8(0))
     for v in mii_dict:
-        eo = (7 + (v ^ n)) % 256 # encode the Mii, Nintendo seemed to have randomized the encoding using Math.random() in JS, but we removed randomizing
+        eo = (7 + (v ^ n)) % 255 # encode the Mii, Nintendo seemed to have randomized the encoding using Math.random() in JS, but we removed randomizing
         n = eo
         mii_data += hexlify(u8(eo))
         f.write(u8(v))

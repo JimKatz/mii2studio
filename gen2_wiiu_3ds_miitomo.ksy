@@ -29,16 +29,10 @@ seq:
     type: u1
     repeat: expr
     repeat-expr: 8
-  - id: unknown_4
-    type: b1
-  - id: dsi_mii
-    type: b1
-  - id: temporary_mii
-    type: b1
-  - id: always_set
-    type: b1
   - id: avatar_id
-    type: b28
+    type: u1
+    repeat: expr
+    repeat-expr: 4
   - id: client_id
     type: u1
     repeat: expr
@@ -104,9 +98,9 @@ instances:
     value: data_1 >> 14 & 1
   favorite_color:
     value: data_1 >> 10 & 15
-  birth_month:
-    value: data_1 >> 5 & 31
   birth_day:
+    value: data_1 >> 5 & 31
+  birth_month:
     value: data_1 >> 1 & 15
   eye_vertical:
     value: eye >> 25 & 31

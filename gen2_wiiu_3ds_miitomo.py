@@ -1,12 +1,13 @@
 # This is a generated file! Please edit source .ksy file and use kaitai-struct-compiler to rebuild
 
 from pkg_resources import parse_version
-from kaitaistruct import __version__ as ks_version, KaitaiStruct, KaitaiStream, BytesIO
+import kaitaistruct
+from kaitaistruct import KaitaiStruct, KaitaiStream, BytesIO
 
 
-if parse_version(ks_version) < parse_version('0.7'):
-    raise Exception(
-        "Incompatible Kaitai Struct Python API: 0.7 or later is required, but you have %s" % (ks_version))
+if parse_version(kaitaistruct.__version__) < parse_version('0.9'):
+    raise Exception("Incompatible Kaitai Struct Python API: 0.9 or later is required, but you have %s" % (
+        kaitaistruct.__version__))
 
 
 class Gen2Wiiu3dsMiitomo(KaitaiStruct):
@@ -18,26 +19,24 @@ class Gen2Wiiu3dsMiitomo(KaitaiStruct):
 
     def _read(self):
         self.unknown_1 = self._io.read_u1()
-        self.character_set = self._io.read_bits_int(2)
-        self.region_lock = self._io.read_bits_int(2)
-        self.profanity_flag = self._io.read_bits_int(1) != 0
-        self.copying = self._io.read_bits_int(1) != 0
-        self.unknown_2 = self._io.read_bits_int(2)
-        self.mii_position_slot_index = self._io.read_bits_int(4)
-        self.mii_position_page_index = self._io.read_bits_int(4)
-        self.version = self._io.read_bits_int(4)
-        self.unknown_3 = self._io.read_bits_int(4)
+        self.character_set = self._io.read_bits_int_be(2)
+        self.region_lock = self._io.read_bits_int_be(2)
+        self.profanity_flag = self._io.read_bits_int_be(1) != 0
+        self.copying = self._io.read_bits_int_be(1) != 0
+        self.unknown_2 = self._io.read_bits_int_be(2)
+        self.mii_position_slot_index = self._io.read_bits_int_be(4)
+        self.mii_position_page_index = self._io.read_bits_int_be(4)
+        self.version = self._io.read_bits_int_be(4)
+        self.unknown_3 = self._io.read_bits_int_be(4)
         self._io.align_to_byte()
         self.system_id = [None] * (8)
         for i in range(8):
             self.system_id[i] = self._io.read_u1()
 
-        self.unknown_4 = self._io.read_bits_int(1) != 0
-        self.dsi_mii = self._io.read_bits_int(1) != 0
-        self.temporary_mii = self._io.read_bits_int(1) != 0
-        self.always_set = self._io.read_bits_int(1) != 0
-        self.avatar_id = self._io.read_bits_int(28)
-        self._io.align_to_byte()
+        self.avatar_id = [None] * (4)
+        for i in range(4):
+            self.avatar_id[i] = self._io.read_u1()
+
         self.client_id = [None] * (6)
         for i in range(6):
             self.client_id[i] = self._io.read_u1()
@@ -47,16 +46,16 @@ class Gen2Wiiu3dsMiitomo(KaitaiStruct):
         self.mii_name = (self._io.read_bytes(20)).decode(u"utf-16le")
         self.body_height = self._io.read_u1()
         self.body_weight = self._io.read_u1()
-        self.face_color = self._io.read_bits_int(3)
-        self.face_type = self._io.read_bits_int(4)
-        self.mingle = self._io.read_bits_int(1) != 0
-        self.face_makeup = self._io.read_bits_int(4)
-        self.face_wrinkles = self._io.read_bits_int(4)
+        self.face_color = self._io.read_bits_int_be(3)
+        self.face_type = self._io.read_bits_int_be(4)
+        self.mingle = self._io.read_bits_int_be(1) != 0
+        self.face_makeup = self._io.read_bits_int_be(4)
+        self.face_wrinkles = self._io.read_bits_int_be(4)
         self._io.align_to_byte()
         self.hair_type = self._io.read_u1()
-        self.unknown_5 = self._io.read_bits_int(4)
-        self.hair_flip = self._io.read_bits_int(1) != 0
-        self.hair_color = self._io.read_bits_int(3)
+        self.unknown_5 = self._io.read_bits_int_be(4)
+        self.hair_flip = self._io.read_bits_int_be(1) != 0
+        self.hair_color = self._io.read_bits_int_be(3)
         self._io.align_to_byte()
         self.eye = self._io.read_u4le()
         self.eyebrow = self._io.read_u4le()
@@ -139,7 +138,7 @@ class Gen2Wiiu3dsMiitomo(KaitaiStruct):
         if hasattr(self, '_m_birth_month'):
             return self._m_birth_month if hasattr(self, '_m_birth_month') else None
 
-        self._m_birth_month = ((self.data_1 >> 5) & 31)
+        self._m_birth_month = ((self.data_1 >> 1) & 15)
         return self._m_birth_month if hasattr(self, '_m_birth_month') else None
 
     @property
@@ -331,7 +330,7 @@ class Gen2Wiiu3dsMiitomo(KaitaiStruct):
         if hasattr(self, '_m_birth_day'):
             return self._m_birth_day if hasattr(self, '_m_birth_day') else None
 
-        self._m_birth_day = ((self.data_1 >> 1) & 15)
+        self._m_birth_day = ((self.data_1 >> 5) & 31)
         return self._m_birth_day if hasattr(self, '_m_birth_day') else None
 
     @property
