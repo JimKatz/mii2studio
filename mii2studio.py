@@ -94,8 +94,8 @@ elif input_type == "switch":
     from gen3_switch import Gen3Switch
     orig_mii = Gen3Switch.from_file(input_file)
 elif input_type == "switchgame":
-    from gen3_switchgame import Gen3SwitchGame
-    orig_mii = Gen3SwitchGame.from_file(sys.argv[1])
+    from gen3_switchgame import Gen3Switchgame
+    orig_mii = Gen3Switchgame.from_file(sys.argv[1])
 else:
     print("Error: Invalid input type.")
     exit()
@@ -145,7 +145,7 @@ if input_type != "studio":
         0x100: "???"
     }
     
-    if input_type != "switch":
+    if "switch" not in input_type:
         mii_type = ""
         i = ""
 
@@ -157,7 +157,7 @@ if input_type != "studio":
 
         print("Mii Type: " + mii_type)
         
-    if input_type == "wii":
+    if input_type == "wii" or "switch" in input_type:
         print("Gender: Male" if orig_mii.gender == 0 else "Gender: Female")
     else:
         print("Gender: Male" if orig_mii.gender == 1 else "Gender: Female")
@@ -254,7 +254,7 @@ if input_type != "studio":
     else:
         studio_mii["face_wrinkles"] = orig_mii.face_wrinkles
     studio_mii["favorite_color"] = orig_mii.favorite_color
-    if input_type == "wii":
+    if input_type == "wii" or "switch" in input_type:
         studio_mii["gender"] = 0 if orig_mii.gender == 0 else 1
     else:
         studio_mii["gender"] = 1 if orig_mii.gender == 0 else 0
@@ -320,7 +320,7 @@ with open(output_file, "wb") as f:
         mii_dict = studio_mii.values()
     mii_data += hexlify(u8(0))
     for v in mii_dict:
-        eo = (7 + (v ^ n)) % 255 # encode the Mii, Nintendo seemed to have randomized the encoding using Math.random() in JS, but we removed randomizing
+        eo = (7 + (v ^ n)) % 254 # encode the Mii, Nintendo seemed to have randomized the encoding using Math.random() in JS, but we removed randomizing
         n = eo
         mii_data += hexlify(u8(eo))
         f.write(u8(v))

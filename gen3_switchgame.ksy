@@ -1,5 +1,5 @@
 meta:
-  id: miidata_switchgame
+  id: gen3_switchgame
   endian: le
 seq:
   - id: unknown_data
