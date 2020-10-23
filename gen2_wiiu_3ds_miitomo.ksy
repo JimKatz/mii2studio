@@ -92,8 +92,6 @@ seq:
   - id: checksum
     type: u2le
 instances:
-  gender:
-    value: data_1 >> 15
   favorite:
     value: data_1 >> 14 & 1
   favorite_color:
@@ -102,6 +100,8 @@ instances:
     value: data_1 >> 5 & 31
   birth_month:
     value: data_1 >> 1 & 15
+  gender:
+    value: data_1 & 1
   eye_vertical:
     value: eye >> 25 & 31
   eye_horizontal:

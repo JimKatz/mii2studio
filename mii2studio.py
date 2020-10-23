@@ -80,6 +80,7 @@ elif input_type == "3ds" or input_type == "wiiu" or input_type == "miitomo":
             content = cipher.decrypt(decoded_qr[8:96])
             result = content[:12] + nonce + content[12:]
             f.write(result)
+            print(hexlify(result))
 
         input_file = "temp.mii"
 
@@ -157,11 +158,8 @@ if input_type != "studio":
 
         print("Mii Type: " + mii_type)
         
-    if input_type == "wii" or "switch" in input_type:
-        print("Gender: Male" if orig_mii.gender == 0 else "Gender: Female")
-    else:
-        print("Gender: Male" if orig_mii.gender == 1 else "Gender: Female")
-
+    print("Gender: Male" if orig_mii.gender == 0 else "Gender: Female")
+    
     if "switch" not in input_type:
         print("Mingle: Yes" if orig_mii.mingle == 1 else "Mingle: No")
     
@@ -254,10 +252,7 @@ if input_type != "studio":
     else:
         studio_mii["face_wrinkles"] = orig_mii.face_wrinkles
     studio_mii["favorite_color"] = orig_mii.favorite_color
-    if input_type == "wii" or "switch" in input_type:
-        studio_mii["gender"] = 0 if orig_mii.gender == 0 else 1
-    else:
-        studio_mii["gender"] = 1 if orig_mii.gender == 0 else 0
+    studio_mii["gender"] = orig_mii.gender
     if "switch" not in input_type:
         if orig_mii.glasses_color == 0:
             studio_mii["glasses_color"] = 8
@@ -320,7 +315,7 @@ with open(output_file, "wb") as f:
         mii_dict = studio_mii.values()
     mii_data += hexlify(u8(0))
     for v in mii_dict:
-        eo = (7 + (v ^ n)) % 254 # encode the Mii, Nintendo seemed to have randomized the encoding using Math.random() in JS, but we removed randomizing
+        eo = (7 + (v ^ n)) % 256 # encode the Mii, Nintendo seemed to have randomized the encoding using Math.random() in JS, but we removed randomizing
         n = eo
         mii_data += hexlify(u8(eo))
         f.write(u8(v))

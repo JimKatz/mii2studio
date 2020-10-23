@@ -322,7 +322,7 @@ class Gen2Wiiu3dsMiitomo(KaitaiStruct):
         if hasattr(self, '_m_gender'):
             return self._m_gender if hasattr(self, '_m_gender') else None
 
-        self._m_gender = (self.data_1 >> 15)
+        self._m_gender = (self.data_1 & 1)
         return self._m_gender if hasattr(self, '_m_gender') else None
 
     @property
