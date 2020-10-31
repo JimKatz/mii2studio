@@ -80,7 +80,6 @@ elif input_type == "3ds" or input_type == "wiiu" or input_type == "miitomo":
             content = cipher.decrypt(decoded_qr[8:96])
             result = content[:12] + nonce + content[12:]
             f.write(result)
-            print(hexlify(result))
 
         input_file = "temp.mii"
 
